@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  
+  
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia&effect=neon|outline|emboss|shadow-multiple">
+    <link href="https://fonts.googleapis.com/css2?family=Courgette&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script async defer crossorigin="anonymous" src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v6.0"></script>
+	
+	
+  <title>Pesan Tiket </title>
+  <style>
+body {
+font-family: Arial;
+font-size: 17px;
+padding: 8px;
+}
+
+* {
+box-sizing: border-box;
+}
+
+.row {
+display: -ms-flexbox; /* IE10 */
+display: flex;
+-ms-flex-wrap: wrap; /* IE10 */
+flex-wrap: wrap;
+margin: 0 -16px;
+}
+
+.col-25 {
+-ms-flex: 25%; /* IE10 */
+flex: 25%;
+}
+
+.col-50 {
+-ms-flex: 50%; /* IE10 */
+flex: 50%;
+}
+
+.col-75 {
+-ms-flex: 75%; /* IE10 */
+flex: 75%;
+}
+
+.col-25,
+.col-50,
+.col-75 {
+padding: 0 16px;
+}
+
+input[type=text] {
+width: 100%;
+margin-bottom: 20px;
+padding: 12px;
+border: 1px solid #ccc;
+border-radius: 3px;
+}
+
+label {
+margin-bottom: 10px;
+display: block;
+}
+
+.icon-conflighter {
+margin-bottom: 20px;
+padding: 7px 0;
+font-size: 24px;
+}
+
+.btn {
+background-color: #04AA6D;
+color: white;
+padding: 12px;
+margin: 10px 0;
+border: none;
+width: 100%;
+border-radius: 3px;
+cursor: pointer;
+font-size: 17px;
+}
+
+.btn:hover {
+background-color: #45a049;
+}
+
+a {
+color: #2196F3;
+}
+
+hr {
+border: 1px solid lightgrey;
+}
+
+span.price {
+float: right;
+color: grey;
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+.row {
+flex-direction: column-reverse;
+}
+.col-25 {
+margin-bottom: 20px;
+}
+}
+</style>
+</head>
+
+<body>
+<script type="text/javascript">
+    window.localStorage.setItem("counter",parseInt(0));
+    console.log(window.localStorage.getItem("counter"),typeof(parseInt(window.localStorage.getItem("counter"))))
+
+</script>
+
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+  <img src="logo.png" href="#" style="width:50px;"/>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" th:href="@{/}">Beranda <span class="sr-only">(current)</span></a>
+      </li>
+
+      <li class="nav-item active">
+        <a class="nav-link" th:href="@{/about}">Tentang </a>
+      </li>
+
+
+      <li class="nav-item active">
+         <a class="nav-link enabled" href="@{/contact}" tabindex="-1" aria-disabled="false">Kontak </a>
+      </li>
+
+    </ul>
+    
+  </div>
+</nav>
+
+  <div class="conflighter">
+
+     <h2 class="text-center mt-4 mb-5">Pesan Tiket</h2>
+
+
+    <!-- Form Section -->
+    <form id="passenger">
+
+      <div class="form-row">
+
+        <div class="form-group col-md-4">
+          <label for="name">Nama Penumpang</label>
+          <input type="text" class="form-control input-lg" id="name" pattern="[a-zA-Z]{3,20}" placeholder="Passenger Name" title="Enter valid name..!!!" required />
+        </div>
+        <div class="form-group col-md-4">
+          <label for="age">Usia </label>
+          <input type="number" class="form-control input-lg" id="age" min=3 max="120" placeholder = "Age "required />
+        </div>
+        <div class="form-group col-md-4">
+          <label for="gender">Gender</label>
+            <select name="gender" class="form-control input-lg" id="gender" value="Select Gender ">
+                <option value="M">Laki-Laki</option>
+                <option value="F">Perempuan</option>
+
+            </select>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-success btn-lg btn-block" id="addPassngr">
+        Tambahkan Penumpang
+      </button>
+    </form>
+  </div>
+
+  <hr />
+
+  <!-- List Penumpang dengan konten tabel -->
+  <div class="conflighter">
+    <h2 class="text-center mt-5">List Penumpang</h2>
+
+    <table class="table table-striped table-hover mt-5 text-center table-responsive-md table-responsive-sm">
+        <tr>
+          <th>Nama</th>
+          <th>Usia</th>
+          <th>Gender</th>
+          <th>Harga Tiket</th>
+          <th>Perbaharui</th>
+        </tr>
+      <tbody id="passenger-list"></tbody>
+
+    </table>
+<!--     Total harga tiket : <p id ="totalamt" value="00"></p>-->
+      <div>
+
+            Total Harga Tiket : <input disabled type="text" class="form-control" id ="totalamt" name="fitness" value="00">
+
+
+      </div>
+    <button type="submit" class="btn btn-success btn-lg btn-block" onclick="setNetPay()" data-toggle="modal" data-target="#paymentModal">
+        Lakukan Pembayaran Untuk Melanjutkan Pemesanan
+      </button>
+  </div>
+
+
+
+<!--  Payment Pop UP MODAL-->
+
+ <div class="conflighter-fluid">
+
+          <!-- Modal -->
+  <div class="modal fade" id="paymentModal" role="dialog">
+    <div class="modal-dialog modal-md">
+
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header bg-primary" >
+          <button type="button" id="payclose"class="close" data-dismiss="modal">&times;</button>
+
+        </div>
+        <div class="modal-body">
+            <div class="conflighter">
+                <form>
+                    <h3>Pembayaran</h3>
+                    <label for="fname">Kartu yang dapat digunakan</label>
+                    <div class="icon-conflighter">
+                    <i class="fa fa-cc-visa" style="color:navy;"></i>
+                    <i class="fa fa-cc-amex" style="color:blue;"></i>
+                    <i class="fa fa-cc-mastercard" style="color:red;"></i>
+                    <i class="fa fa-cc-discover" style="color:orange;"></i>
+                    </div>
+                    <label for="cname">Nama pada Kartu</label>
+                    <input type="text" id="cname" name="cardname" placeholder="John More Doe" reqired>
+                    <label for="ccnum">Nomor kartu kredit</label>
+                    <input type="text" id="ccnum" name="cardnumber" placeholder="1111-2222-3333-4444" required>
+                    <label for="expmonth">Bulan Kedaluarsa</label>
+                    <input type="text" id="expmonth" name="expmonth" placeholder="September" required>
+                    <div class="row">
+                    <div class="col-50">
+                        <label for="expyear">Tahun Kedaluarsa</label>
+                        <input type="text" id="expyear" name="expyear" placeholder="2025" required>
+                    </div>
+                    <div class="col-50">
+                        <label for="cvv">CVV</label>
+                        <input type="text" id="cvv" name="cvv" placeholder="352" required>
+                    </div>
+                    </div>
+                    Jumlah yang harus dibayar : <p id="NetAmt"></p>
+                    <input type="submit" value="Pay" class="btn" id="paybtn" >
+                </form >
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+    </div>
+
+<script type="text/javascript">
+    if (parseInt(window.localStorage.getItem("counter")) >= parseInt(4)){
+      document.getElementById("addPassngr").style.visibility = 'hidden';
+    }
+
+  function setNetPay(){
+
+    let netamt = parseInt(document.getElementById("totalamt").value);
+    document.getElementById("NetAmt").innerHTML = netamt;
+
+    }
+  document.getElementById("paybtn").addEventListener("click", function(e){
+        console.log("paybtn clicked");
+        e.preventDefault();
+        arrayItr();
+      alert("Semoga perjalanan anda aman dan menyenangkan! '\n' Terima kasih telah melakukan pembelian tiket peswat.");
+      document.getElementById("payclose").click();
+  });
+
+
+
+
+</script>
+<br><br><br>
+<footer class="fixed-bottom text-center bg-primary text-white">
+    <div class="bg-dark py-3">
+    <p>@copyright flightbook.com 2022</p>
+    </div>
+</footer>
+  <!-- JS Link -->
+<script type="text/javascript" th:src="@{/main.js}"></script>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
